@@ -1,17 +1,20 @@
-import React, {useEffect, useCallback} from 'react';
-import {Table} from 'react-bootstrap';
+import React, {useEffect, useCallback, useState} from 'react';
+import {Table, Button} from 'react-bootstrap';
+import {CSVLink} from 'react-csv'
 
 const TableUsers=(props)=>{
-    
 
+    const [dataCSV, setDataCSV]=useState([]);
+    
     const scrollPage = useCallback((event) => {
-          if ( event.target.documentElement.offsetHeight -(event.target.documentElement.scrollTop + window.innerHeight) < 100) {
-            props.setItem((prevState) => prevState + 10);
+          if ( event.target.documentElement.offsetHeight -(event.target.documentElement.scrollTop + window.innerHeight) < 50) {
+            props.setItem((prevState) => prevState + 10);            
           }
           // eslint-disable-next-line
         },[props.setItem]);
     
       useEffect(() => {
+        
         document.addEventListener("scroll", scrollPage);
     
         return () => document.removeEventListener("scroll", scrollPage);
@@ -27,8 +30,21 @@ const TableUsers=(props)=>{
         </tr>)
     });
 
+
+    const sendToCSV=()=>{
+      let arrForCSV=[];
+       props.data.slice(0, props.itemsInPage).forEach((el)=>{
+        arrForCSV.push(Object.entries(el))
+       })
+       setDataCSV(arrForCSV);       
+    }
+
     return(
-        <div style={{marginTop:'3%'}}> 
+        <div style={{margin:'3% 2% 0 2%'}}> 
+             
+        <Button variant="dark"  style={{height:'2.5em', position:'fixed',top:'25%', right:'5%'}} onClick={()=>sendToCSV()}>
+        <CSVLink data={dataCSV} style={{textDecoration:'none', color:'white'}}>Export to CSV</CSVLink> 
+        </Button>
             <Table striped>
         <thead>
           <tr>

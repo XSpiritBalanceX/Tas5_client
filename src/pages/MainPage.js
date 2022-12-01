@@ -6,12 +6,11 @@ const MainPage=()=>{
 
     const [country, setCountry]=useState('en');
     const [errInp, setErrInp]=useState(0);
-    const [seed, setSeed]=useState(0);
-    const [testSeed, setTestSeed]=useState('');
+    const [seed, setSeed]=useState('');
     const [itemInPage, setItemInPage]=useState(20);
     const [fakeData, setFakeData]=useState([]);
     const [isLoad, setLoad]=useState(true);
-    const size=10;
+    const size=300;
     const page=20;
 
 //https://task5server-production.up.railway.app/api/data
@@ -28,11 +27,11 @@ const MainPage=()=>{
         setErrInp(newErr) 
     }
 
-    const sendSeed=(event)=>{
-        if(event==='buttonRandom'){
-            setSeed(testSeed);
-        }
-        setTestSeed('');
+    const setRandomSeed=()=>{
+        let min=0;
+        let max=1000;
+        let randSeed=min+Math.random()*(max+1-min);
+        setSeed(Math.floor(randSeed))
     }
 
 
@@ -53,14 +52,14 @@ const MainPage=()=>{
       </ButtonGroup>
         </div>
          <div style={{width:'30%'}}>
-            <Form.Label>Your range is {errInp}</Form.Label>
+            <Form.Label>Your number of mistakes is {errInp}</Form.Label>
             <Form.Range step={0.5} min={0} max={10} value={errInp} onChange={(event)=>handleErr(event.target.value)}/>
             <Form.Control type="number" min={0} max={1000} 
               value={errInp} onChange={(event)=> handleErr(event.target.value)} placeholder='Enter the number of errors'/>
          </div>
          <div style={{width:'40%', display:'flex', flexDirection:'row'}}>
-         <Form.Control style={{height:'2.5em'}} placeholder='Enter seed' value={testSeed} onChange={(event)=>{sendSeed(event.target.value); setTestSeed(event.target.value)}}/>
-         <Button variant="dark"  style={{height:'2.5em'}} name='buttonRandom' onClick={(event)=>sendSeed(event.target.name)}>Random</Button>
+         <Form.Control style={{height:'2.5em'}} placeholder='Enter seed' value={seed} onChange={(event)=>setSeed(event.target.value)}/>
+         <Button variant="dark"  style={{height:'2.5em'}} name='buttonRandom' onClick={()=>setRandomSeed()}>Random</Button>
          </div>
         </div>
         {isLoad?<TableUsers data={fakeData} itemsInPage={itemInPage} setItem={setItemInPage}/>:
