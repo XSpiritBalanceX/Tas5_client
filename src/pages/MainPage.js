@@ -13,9 +13,8 @@ const MainPage=()=>{
     const size=300;
     const page=20;
 
-//https://task5server-production.up.railway.app/api/data
     useEffect(()=>{
-        fetch(`http://localhost:5000/api/data?seed=${seed}&page=${page}&size=${size}&err=${errInp}&local=${country}`)
+        fetch(`https://task5server-production.up.railway.app/api/data?seed=${seed}&page=${page}&size=${size}&err=${errInp}&local=${country}`)
         .then(response=>response.json())
         .then(data=>{setFakeData(data.users); setLoad(true)})
         .catch(err=>console.log(err))
